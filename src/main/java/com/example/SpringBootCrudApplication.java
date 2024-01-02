@@ -1,6 +1,7 @@
 package com.example;
 
 
+import com.example.controller.UserController;
 import com.example.entity.Event;
 import com.example.entity.User;
 import com.example.service.EventService;
@@ -19,6 +20,9 @@ public class SpringBootCrudApplication implements CommandLineRunner {
     UserService userService;
 
     @Autowired
+    UserController userController;
+
+    @Autowired
     EventService eventService;
 
     public static void main(String[] args) {
@@ -32,26 +36,21 @@ public class SpringBootCrudApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //User dao test
-        User user3 = new User(1, "Monika", "monbon@test.com");
 
-        userService.createUser(user3);
-
-        List<User> findUser = userService.getUsers();
-        System.out.println("all users in DB: " + findUser);
-
-
-        System.out.println("User is saved: " + user3.getName());
 
 
         //event dao test
+//
+//        Event event = new Event(1, "Football", "Football place", BigDecimal.valueOf(250));
+//        Event event2 = new Event(2, "Dance", "City plaza", BigDecimal.valueOf(50));
+//        Event event3 = new Event(3, "Swim", "CPool centre", BigDecimal.valueOf(120));
+//        eventService.createEvent(event3);
+//
+//        List<Event> existingEventsInDB = eventService.getEvents();
+//        System.out.println("Found following events: " + existingEventsInDB);
 
-        Event event = new Event(1, "Football", "Football place", BigDecimal.valueOf(250));
-        Event event2 = new Event(2, "Dance", "City plaza", BigDecimal.valueOf(50));
-        Event event3 = new Event(3, "Swim", "CPool centre", BigDecimal.valueOf(120));
-        eventService.createEvent(event3);
 
-        List<Event> existingEventsInDB = eventService.getEvents();
-        System.out.println("Found following events: " + existingEventsInDB);
     }
+
+
 }
