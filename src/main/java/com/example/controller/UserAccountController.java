@@ -20,9 +20,9 @@ public class UserAccountController {
         return userAccountService.saveUserAccount(userAccount);
     }
 
-    @GetMapping("/userAccount/{id}")
-    public UserAccount getUserAccountById(@PathVariable int id) {
-        return userAccountService.getUserAccountById(id);
+    @GetMapping("/userAccount")
+    public UserAccount getUserAccountById(@PathVariable User user) {
+        return userAccountService.getUserAccountById(user);
     }
 
     @PutMapping("/updateUserAccount")
@@ -30,5 +30,8 @@ public class UserAccountController {
         return userAccountService.updateBalance(user, amount);
     }
 
-
+    @GetMapping("/balance/{user}")
+    public BigDecimal getUserBalanceById(@PathVariable User user) {
+        return userAccountService.getUserBalance(user);
+    }
 }

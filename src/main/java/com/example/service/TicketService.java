@@ -20,6 +20,9 @@ import java.util.Optional;
 public class TicketService {
 
     @Autowired
+    private UserAccountService userAccountService;
+
+    @Autowired
     TicketRepository ticketRepository;
 
     @Autowired
@@ -28,8 +31,6 @@ public class TicketService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    UserAccountRepository userAccountRepository;
 
     public Ticket saveTicket(Ticket ticket) {
         return ticketRepository.save(ticket);
@@ -48,7 +49,7 @@ public class TicketService {
         return ticketRepository.findById(event.getId()).orElse(null);
     }
 
-    public Ticket addTicket(User userId, Event eventId, int seat) {
+    public Ticket boockTicket(User userId, Event eventId, int seat) {
 
         Optional<User> optionalUser = userRepository.findById(userId.getId());
         if (optionalUser.isPresent()) {
@@ -59,8 +60,8 @@ public class TicketService {
                 Event event = optionalEvent.get();
                 BigDecimal ticketPrice = event.getTicketPrice();
 
-                Optional<UserAccount> optionalUserAccountBalance = userAccountRepository.findById(userId.getId());
-                if (optionalUserAccountBalance.get().getBalance().compareTo(ticketPrice) >= 0) {
+                BigDecimal userAccountBalance = userAccountService.getUserBalance(userId);
+                if (userAccountBalance.compareTo(ticketPrice) >= 0) {
 
                     Ticket ticket = new Ticket();
                     ticket.setUserId(user);
@@ -68,9 +69,10 @@ public class TicketService {
                     ticket.setSeat(seat);
 
                     UserAccount userAccount = new UserAccount();
-                    userAccount.setBalance(optionalUserAccountBalance.get().getBalance().subtract(ticketPrice));
-                    userRepository.save(user);
-
+                    BigDecimal x = userAccountBalance.subtract(ticketPrice);
+                    userAccount.setBalance(x);
+                    userAccount.setUserId(userId);
+                    userAccountService.updateBalance(userAccount.getUserId(), userAccount.getBalance());
 
                     return ticketRepository.save(ticket);
                 }else {

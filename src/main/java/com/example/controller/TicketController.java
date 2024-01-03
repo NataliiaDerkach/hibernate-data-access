@@ -36,7 +36,7 @@ public class TicketController {
 
     @PutMapping("/bookTicket")
     public Ticket bookTicket(@RequestBody User userId, Event eventId, int seat) {
-        return ticketService.addTicket(userId, eventId, seat);
+        return ticketService.boockTicket(userId, eventId, seat);
     }
 
 }
